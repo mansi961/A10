@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cookie Demo - A10</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background-color: #f0f8ff;
+      color: #333;
+    }
+    label, input {
+      font-size: 1rem;
+    }
+    .cookie-display {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>A10 – Cookie Demo</h1>
+  <p>Set your name below. When you reload the page, it will remember you!</p>
+
+  <form onsubmit="setCookieFromForm(event)">
+    <label for="username">Enter your name:</label>
+    <input type="text" id="username" name="username" required />
+    <button type="submit">Set Cookie</button>
+  </form>
+
+  <div class="cookie-display" id="cookieMessage"></div>
+
+  <script>
+    // Set cookie
+    function setCookie(cname, cvalue, exdays) {
+      const d = new Date();
+      d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+      const expires = "expires=" + d.toUTCString();
+      document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+    // Get cookie
+    function getCookie(cname) {
+      const name = cname + "=";
+      const decodedCookie = decodeURIComponent(document.cookie);
+      const ca = decodedCookie.split(';');
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i].trim();
+        if (c.indexOf(name) === 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
+    }
+
+    // Handle form submission
+    function setCookieFromForm(event) {
+      event.preventDefault();
+      const username = document.getElementById("username").value;
+      setCookie("username", username, 7);
+      displayCookie();
+    }
+
+    // Display cookie on page load
+    function displayCookie() {
+      const user = getCookie("username");
+      const message = user
+        ? "Welcome back, " + user + "!"
+        : "No cookie found. Please enter your name above.";
+      document.getElementById("cookieMessage").textContent = message;
+    }
+
+    // Run on load
+    window.onload = displayCookie;
+  </script>
+
+  <footer style="margin-top: 50px;">
+    <p>&copy; 2025 Your Full Name – A10 Assignment – IS117</p>
+  </footer>
+
+</body>
+</html>
